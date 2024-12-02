@@ -13,21 +13,12 @@ public class Program
 
     private static bool IsSafe(List<int> levels, int maxProblems)
     {
-        var problemCount = 0;
         var differences = levels.EnumerateDifferences().ToList();
 
-        problemCount += differences.Count(x => x == 0);
-        problemCount += differences.Count(x => x > 3);
-        problemCount += differences.Count(x => x < -3);
-
-        if (differences[0] > 0)
-        {
-            problemCount += differences.Count(x => x < 0);
-        }
-        else
-        {
-            problemCount += differences.Count(x => x > 0);
-        }
+        var problemCount = differences.Count(x => x == 0 || x > 3 || x < -3);
+        problemCount += differences[0] > 0
+            ? differences.Count(x => x < 0)
+            : differences.Count(x => x > 0);
 
         return problemCount <= maxProblems;
     }
