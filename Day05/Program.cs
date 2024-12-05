@@ -8,23 +8,16 @@ public class Program
         var rules = ParseRules(_input[0]);
         var lines = _input[1].SplitLines();
 
-        Console.WriteLine($"Part 1: {Part1(rules, lines)}");
-        Console.WriteLine($"Part 2: {Part2(rules, lines)}");
+        Console.WriteLine($"Part 1: {Solve(rules, lines, true)}");
+        Console.WriteLine($"Part 2: {Solve(rules, lines, false)}");
     }
 
-    private static int Part1(Comparer<int> rules, string[] lines)
-        => lines.Sum(x =>
-        {
-            var nums = x.ExtractInts().ToList();
-            return nums.Order(rules).SequenceEqual(nums) ? nums[nums.Count / 2] : 0;
-        });
-
-    private static int Part2(Comparer<int> rules, string[] lines)
+    private static int Solve(Comparer<int> rules, string[] lines, bool isPart1)
         => lines.Sum(x =>
         {
             var nums = x.ExtractInts().ToList();
             var ordered = nums.Order(rules).ToList();
-            return !ordered.SequenceEqual(nums) ? ordered[ordered.Count / 2] : 0;
+            return nums.Order(rules).SequenceEqual(nums) == isPart1 ? ordered[ordered.Count / 2] : 0;
         });
 
     private static Comparer<int> ParseRules(string input)
