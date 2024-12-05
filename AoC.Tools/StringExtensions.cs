@@ -127,6 +127,16 @@ public static partial class StringExtensions
         return sb.ToString();
     }
 
+    public static string Repeat(this string text, int count, string separator = "")
+        => new StringBuilder((text.Length + separator.Length) * count)
+            .Insert(0, text + separator, count)
+            .ToString();
+
+    public static string Repeat(this char c, int count, string separator = "")
+        => new StringBuilder((1 + separator.Length) * count)
+            .Insert(0, c + separator, count)
+            .ToString();
+
     public static bool IsNullOrWhiteSpace(this string text) => string.IsNullOrWhiteSpace(text);
     public static bool IsNotNullOrWhiteSpace(this string text) => !string.IsNullOrWhiteSpace(text);
 

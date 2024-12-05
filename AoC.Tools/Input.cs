@@ -47,10 +47,10 @@ public static class Input
     public static string[] SplitOn(this string text, params char[] separators)
         => text.Split(separators, StringSplitOptions.None);
 
-    public static IEnumerable<string> ReadAsParagraphs(StringSplitOptions splitOptions = StringSplitOptions.RemoveEmptyEntries)
+    public static string[] ReadAsParagraphs(StringSplitOptions splitOptions = StringSplitOptions.RemoveEmptyEntries)
         => ReadAll().Split(["\n\n", "\r\n\r\n"], splitOptions);
 
-    public static IEnumerable<string> ReadAsParagraphs(int day, StringSplitOptions splitOptions = StringSplitOptions.RemoveEmptyEntries)
+    public static string[] ReadAsParagraphs(int day, StringSplitOptions splitOptions = StringSplitOptions.RemoveEmptyEntries)
         => ReadAll(day).Split(["\n\n", "\r\n\r\n"], splitOptions);
 
     public static IEnumerable<string> SplitIntoColumns(this string text)
