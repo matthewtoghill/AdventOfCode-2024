@@ -100,4 +100,13 @@ public static class EnumerableExtensions
                     where (m & (1 << i)) != 0
                     select list[i];
     }
+
+    public static IEnumerable<IEnumerable<T>> GeneratePermutations<T>(this IEnumerable<T> items, int quantity)
+    {
+        if (quantity == 1)
+            return items.Select(item => new[] { item });
+
+        return items.GeneratePermutations(quantity - 1)
+                    .SelectMany(x => items, (x, item) => x.Append(item));
+    }
 }
