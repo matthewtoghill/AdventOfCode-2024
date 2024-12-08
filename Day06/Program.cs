@@ -6,7 +6,7 @@ public class Program
 {
     private static readonly string[] _input = Input.ReadAllLines();
     private static readonly Position MinPos = new(0, 0);
-    private static readonly Position MaxPos = new(_input[0].Length - 1, _input.Length);
+    private static readonly Position MaxPos = new(_input[0].Length - 1, _input.Length - 1);
     private static void Main()
     {
         var (start, obstacles) = ProcessMap(_input);
