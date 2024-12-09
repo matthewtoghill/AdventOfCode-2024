@@ -5,6 +5,8 @@ namespace Day04;
 public class Program
 {
     private static readonly string[] _input = Input.ReadAllLines();
+    private static readonly Position MinPos = new(0, 0);
+    private static readonly Position MaxPos = new(_input.Length - 1, _input[0].Length - 1);
     private static void Main()
     {
         Console.WriteLine($"Part 1: {Part1()}");
@@ -13,8 +15,6 @@ public class Program
 
     private static int Part1()
     {
-        var minPos = new Position(0, 0);
-        var maxPos = new Position(_input.Length - 1, _input[0].Length - 1);
         var count = 0;
 
         for (int row = 0; row < _input.Length; row++)
@@ -31,7 +31,7 @@ public class Program
                     var pos3 = pos2 + direction;
                     var pos4 = pos3 + direction;
 
-                    if (pos4.IsOutsideBounds(minPos, maxPos))
+                    if (pos4.IsOutsideBounds(MinPos, MaxPos))
                         continue;
 
                     if (new[] { pos2, pos3, pos4 }.Select(GetLetter).SequenceEqual("MAS"))
@@ -45,8 +45,6 @@ public class Program
 
     private static int Part2()
     {
-        var minPos = new Position(0, 0);
-        var maxPos = new Position(_input.Length - 1, _input[0].Length - 1);
         var count = 0;
 
         for (int row = 0; row < _input.Length; row++)
@@ -64,7 +62,7 @@ public class Program
                 var SW = current + (1, -1);
                 var NE = current + (-1, 1);
 
-                if (new[] { NW, SE, SW, NE }.Any(p => p.IsOutsideBounds(minPos, maxPos)))
+                if (new[] { NW, SE, SW, NE }.Any(p => p.IsOutsideBounds(MinPos, MaxPos)))
                     continue;
 
                 var textA = $"{GetLetter(NW)}{GetLetter(SE)}";
