@@ -5,44 +5,39 @@ public class Program
     private static readonly string[] _input = Input.ReadAllLines();
     private static void Main()
     {
-        Console.WriteLine($"Part 1: {Solve("+", "*")}");
-        Console.WriteLine($"Part 2: {Solve("+", "*", "||")}");
+        Console.WriteLine($"Part 1: {Solve(false)}");
+        Console.WriteLine($"Part 2: {Solve(true)}");
     }
 
-    private static long Solve(params string[] operators)
+    private static long Solve(bool tryConcat)
     {
-        List<long> calibationResults = [];
-
+        long calibrationResult = 0;
         foreach (var line in _input)
         {
             var nums = line.ExtractNumeric<long>().ToList();
             var target = nums[0];
-            nums = nums.Skip(1).ToList();
+            nums = nums[1..];
 
-            var result = CheckCalculation(nums, target, operators);
-            calibationResults.Add(result);
+            if (CheckCalculation(target, nums[0], nums[1..], tryConcat))
+                calibrationResult += target;
         }
 
-        return calibationResults.Sum();
+        return calibrationResult;
     }
 
-    private static long CheckCalculation(List<long> nums, long target, string[] operators)
+    private static bool CheckCalculation(long target, long current, List<long> nums, bool tryConcat)
     {
-        foreach (var permutation in operators.GeneratePermutations(nums.Count - 1).ToList())
-        {
-            var result = nums[0];
-            var ops = permutation.ToList();
-            for (int i = 0; i < ops.Count; i++)
-            {
-                if (ops[i] == "+") result += nums[i + 1];
-                if (ops[i] == "*") result *= nums[i + 1];
-                if (ops[i] == "||") result = long.Parse($"{result}{nums[i + 1]}");
-            }
+        if (current > target) return false;
+        if (nums.Count == 0) return current == target;
 
-            if (result == target)
-                return result;
-        }
+        return CheckCalculation(target, current + nums[0], nums[1..], tryConcat)
+            || CheckCalculation(target, current * nums[0], nums[1..], tryConcat)
+            || (tryConcat && CheckCalculation(target, Concat(current, nums[0]), nums[1..], tryConcat));
+    }
 
-        return 0;
+    private static long Concat(long a, long b)
+    {
+        var d = (int)Math.Log10(b) + 1;
+        return (a * (long)Math.Pow(10, d)) + b;
     }
 }
