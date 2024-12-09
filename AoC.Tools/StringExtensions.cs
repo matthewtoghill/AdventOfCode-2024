@@ -137,6 +137,28 @@ public static partial class StringExtensions
             .Insert(0, c + separator, count)
             .ToString();
 
+    public static void IterateGrid(this string[] lines, Action<int, int, char> action)
+    {
+        for (int row = 0; row < lines.Length; row++)
+        {
+            for (int col = 0; col < lines[row].Length; col++)
+            {
+                action(row, col, lines[row][col]);
+            }
+        }
+    }
+
+    public static IEnumerable<T> IterateGrid<T>(this string[] lines, Func<int, int, char, T> func)
+    {
+        for (int row = 0; row < lines.Length; row++)
+        {
+            for (int col = 0; col < lines[row].Length; col++)
+            {
+                yield return func(row, col, lines[row][col]);
+            }
+        }
+    }
+
     public static int ToInt(this char c) => c - '0';
 
     public static bool IsNullOrWhiteSpace(this string text) => string.IsNullOrWhiteSpace(text);

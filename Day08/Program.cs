@@ -52,19 +52,9 @@ public class Program
     }
 
     private static HashSet<Antenna> GetAntennas(string[] input)
-    {
-        HashSet<Antenna> antennas = [];
-        for (int row = 0; row < input.Length; row++)
-        {
-            for (int col = 0; col < input[row].Length; col++)
-            {
-                if (input[row][col] != '.')
-                    antennas.Add(new Antenna(new Position(col, row), input[row][col]));
-            }
-        }
-
-        return antennas;
-    }
+        => input.IterateGrid((row, col, c) => new Antenna(new(col, row), c))
+                .Where(x => x.Frequency != '.')
+                .ToHashSet();
 
     public static Position GetAntinode(Position start, Position end)
     {
