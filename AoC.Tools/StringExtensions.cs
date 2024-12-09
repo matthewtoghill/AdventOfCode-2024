@@ -137,6 +137,8 @@ public static partial class StringExtensions
             .Insert(0, c + separator, count)
             .ToString();
 
+    public static int ToInt(this char c) => c - '0';
+
     public static bool IsNullOrWhiteSpace(this string text) => string.IsNullOrWhiteSpace(text);
     public static bool IsNotNullOrWhiteSpace(this string text) => !string.IsNullOrWhiteSpace(text);
 
