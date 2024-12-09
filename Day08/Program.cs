@@ -97,4 +97,4 @@ public class Program
     }
 }
 
-public record Antenna(Position Position, char Frequency);
+internal record Antenna(Position Position, char Frequency);
