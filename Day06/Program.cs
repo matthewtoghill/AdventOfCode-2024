@@ -100,4 +100,4 @@ public class Program
     }
 }
 
-public record Guard(Position Position, char Direction);
+internal record Guard(Position Position, char Direction);
