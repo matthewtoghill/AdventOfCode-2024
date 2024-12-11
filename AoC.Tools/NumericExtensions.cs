@@ -13,6 +13,9 @@ public static class NumericExtensions
     public static int Mod(this int num, int divisor) => ((num %= divisor) < 0) ? num + divisor : num;
     public static long Mod(this long num, long divisor) => ((num %= divisor) < 0) ? num + divisor : num;
 
+    public static int Concat(this int left, int right) => (left * (int)Math.Pow(10, right.DigitCount())) + right;
+    public static long Concat(this long left, long right) => (left * (long)Math.Pow(10, right.DigitCount())) + right;
+
     public static long GreatestCommonFactor(int x, int y)
     {
         var b = Math.Max(x, y);

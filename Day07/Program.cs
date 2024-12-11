@@ -32,12 +32,6 @@ public class Program
 
         return CheckCalculation(target, current + nums[0], nums[1..], tryConcat)
             || CheckCalculation(target, current * nums[0], nums[1..], tryConcat)
-            || (tryConcat && CheckCalculation(target, Concat(current, nums[0]), nums[1..], tryConcat));
-    }
-
-    private static long Concat(long a, long b)
-    {
-        var d = (int)Math.Log10(b) + 1;
-        return (a * (long)Math.Pow(10, d)) + b;
+            || (tryConcat && CheckCalculation(target, current.Concat(nums[0]), nums[1..], tryConcat));
     }
 }
