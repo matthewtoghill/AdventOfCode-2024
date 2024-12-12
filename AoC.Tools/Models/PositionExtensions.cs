@@ -37,32 +37,27 @@ public static class PositionExtensions
         return 1 + (area - count) / 2;
     }
 
+    public static int CountPerimeter(this List<Position> positions) => positions.ToHashSet().CountPerimeter();
+    public static int CountPerimeter(this HashSet<Position> positions) => positions.Sum(p => 4 - p.GetNeighbours().Count(positions.Contains));
+
+    public static int CountCorners(this List<Position> positions) => positions.ToHashSet().CountCorners();
     public static int CountCorners(this HashSet<Position> positions)
     {
         var corners = 0;
-
+        var directionPairs = new List<(char, char)> { ('n', 'e'), ('n', 'w'), ('s', 'e'), ('s', 'w') };
         foreach (var pos in positions)
         {
-            var north = pos.MoveInDirection('n');
-            var east = pos.MoveInDirection('e');
-            var south = pos.MoveInDirection('s');
-            var west = pos.MoveInDirection('w');
-            var northEast = north.MoveInDirection('e');
-            var northWest = north.MoveInDirection('w');
-            var southEast = south.MoveInDirection('e');
-            var southWest = south.MoveInDirection('w');
+            foreach (var (dirA, dirB) in directionPairs)
+            {
+                var a = pos.MoveInDirection(dirA);
+                var b = pos.MoveInDirection(dirB);
 
-            // exterior corners
-            if (!positions.Contains(north) && !positions.Contains(east)) corners++;
-            if (!positions.Contains(north) && !positions.Contains(west)) corners++;
-            if (!positions.Contains(south) && !positions.Contains(east)) corners++;
-            if (!positions.Contains(south) && !positions.Contains(west)) corners++;
+                if (!positions.Contains(a) && !positions.Contains(b))
+                    corners++;
 
-            // interior corners
-            if (positions.Contains(north) && positions.Contains(east) && !positions.Contains(northEast)) corners++;
-            if (positions.Contains(north) && positions.Contains(west) && !positions.Contains(northWest)) corners++;
-            if (positions.Contains(south) && positions.Contains(east) && !positions.Contains(southEast)) corners++;
-            if (positions.Contains(south) && positions.Contains(west) && !positions.Contains(southWest)) corners++;
+                if (positions.Contains(a) && positions.Contains(b) && !positions.Contains(a.MoveInDirection(dirB)))
+                    corners++;
+            }
         }
 
         return corners;

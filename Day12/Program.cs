@@ -9,37 +9,8 @@ public class Program
     {
         var regions = GetAllRegions(_input.AsCharMap());
 
-        Console.WriteLine($"Part 1: {Part1(regions)}");
-        Console.WriteLine($"Part 2: {Part2(regions)}");
-    }
-
-    private static int Part1(List<HashSet<Position>> regions)
-    {
-        var result = 0;
-
-        foreach (var region in regions)
-        {
-            var area = region.Count;
-            var perimeter = region.Sum(p => 4 - p.GetNeighbours().Count(region.Contains));
-            result += (area * perimeter);
-        }
-
-        return result;
-    }
-
-    private static int Part2(List<HashSet<Position>> regions)
-    {
-        var result = 0;
-
-        foreach (var region in regions)
-        {
-            var area = region.Count;
-            var corners = region.CountCorners();
-
-            result += (area * corners);
-        }
-
-        return result;
+        Console.WriteLine($"Part 1: {regions.Sum(x => x.Count * x.CountPerimeter())}");
+        Console.WriteLine($"Part 2: {regions.Sum(x => x.Count * x.CountCorners())}");
     }
 
     private static List<HashSet<Position>> GetAllRegions(Dictionary<Position, char> map)
@@ -47,14 +18,13 @@ public class Program
         HashSet<Position> visited = [];
         List<HashSet<Position>> regions = [];
 
-        foreach (var (pos, _) in map)
+        foreach (var (position, _) in map)
         {
-            if (!visited.Contains(pos))
-            {
-                var region = GetRegion(map, pos);
-                regions.Add(region);
-                region.ForEach(p => visited.Add(p));
-            }
+            if (visited.Contains(position)) continue;
+
+            var region = GetRegion(map, position);
+            regions.Add(region);
+            region.ForEach(p => visited.Add(p));
         }
 
         return regions;
