@@ -7,9 +7,11 @@ public class Program
     private static readonly string[] _input = Input.ReadAllLines();
     private static readonly Position MinPos = new(0, 0);
     private static readonly Position MaxPos = new(_input[0].Length - 1, _input.Length - 1);
+    private static readonly Dictionary<char, char> TurnRight = new() { ['N'] = 'E', ['E'] = 'S', ['S'] = 'W', ['W'] = 'N' };
+
     private static void Main()
     {
-        var (start, obstacles) = ProcessMap(_input);
+        var (start, obstacles) = FindStartAndObstacles(_input);
         var guard = new Guard(start, 'N');
 
         var route = Part1(guard, obstacles);
@@ -23,15 +25,14 @@ public class Program
 
         while (true)
         {
+            visited.Add(guard.Position);
             var next = guard.Position.MoveInDirection(guard.Direction);
 
             if (next.IsOutsideBounds(MinPos, MaxPos))
                 break;
 
-            visited.Add(guard.Position);
-
             guard = obstacles.Contains(next)
-                ? new Guard(guard.Position, TurnRight(guard.Direction))
+                ? new Guard(guard.Position, TurnRight[guard.Direction])
                 : new Guard(next, guard.Direction);
         }
 
@@ -63,38 +64,25 @@ public class Program
                 break;
 
             guard = obstacles.Contains(next)
-                ? new Guard(guard.Position, TurnRight(guard.Direction))
+                ? new Guard(guard.Position, TurnRight[guard.Direction])
                 : new Guard(next, guard.Direction);
         }
 
         return false;
     }
 
-    private static char TurnRight(char direction)
-        => direction switch
-        {
-            'N' => 'E',
-            'E' => 'S',
-            'S' => 'W',
-            'W' => 'N',
-            _ => throw new InvalidOperationException()
-        };
-
-    private static (Position, HashSet<Position>) ProcessMap(string[] input)
+    private static (Position, HashSet<Position>) FindStartAndObstacles(string[] input)
     {
         var start = new Position(0, 0);
         HashSet<Position> obstacles = [];
 
-        for (int row = 0; row < input.Length; row++)
+        input.IterateGrid((row, col, c) =>
         {
-            for (int col = 0; col < input[row].Length; col++)
-            {
-                if (input[row][col] == '^')
-                    start = new Position(col, row);
-                else if (input[row][col] == '#')
-                    obstacles.Add(new Position(col, row));
-            }
-        }
+            if (c == '^')
+                start = new(col, row);
+            else if (c == '#')
+                obstacles.Add(new(col, row));
+        });
 
         return (start, obstacles);
     }
