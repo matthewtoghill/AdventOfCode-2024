@@ -11,7 +11,7 @@ public class Program
 
     private static long Solve(int iterations)
     {
-        var stones = _input.ExtractNumeric<long>().GroupBy(x => x).ToDictionary(x => x.Key, x => (long)x.Count());
+        var stones = _input.ExtractNumeric<long>().CountBy(x => x).ToDictionary(x => x.Key, x => (long)x.Value);
 
         for (int i = 0; i < iterations; i++)
         {
