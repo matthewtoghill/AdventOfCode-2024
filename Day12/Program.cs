@@ -34,31 +34,7 @@ public class Program
         foreach (var region in regions)
         {
             var area = region.Count;
-
-            var corners = 0;
-            foreach (var pos in region)
-            {
-                var north = pos.MoveInDirection('n');
-                var east = pos.MoveInDirection('e');
-                var south = pos.MoveInDirection('s');
-                var west = pos.MoveInDirection('w');
-                var northEast = north.MoveInDirection('e');
-                var northWest = north.MoveInDirection('w');
-                var southEast = south.MoveInDirection('e');
-                var southWest = south.MoveInDirection('w');
-
-                // exterior corners
-                if (!region.Contains(north) && !region.Contains(east)) corners++;
-                if (!region.Contains(north) && !region.Contains(west)) corners++;
-                if (!region.Contains(south) && !region.Contains(east)) corners++;
-                if (!region.Contains(south) && !region.Contains(west)) corners++;
-
-                // interior corners
-                if (region.Contains(north) && region.Contains(east) && !region.Contains(northEast)) corners++;
-                if (region.Contains(north) && region.Contains(west) && !region.Contains(northWest)) corners++;
-                if (region.Contains(south) && region.Contains(east) && !region.Contains(southEast)) corners++;
-                if (region.Contains(south) && region.Contains(west) && !region.Contains(southWest)) corners++;
-            }
+            var corners = region.CountCorners();
 
             result += (area * corners);
         }

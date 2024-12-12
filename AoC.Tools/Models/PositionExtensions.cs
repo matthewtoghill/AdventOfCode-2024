@@ -36,4 +36,35 @@ public static class PositionExtensions
         var area = CalculateArea(positions);
         return 1 + (area - count) / 2;
     }
+
+    public static int CountCorners(this HashSet<Position> positions)
+    {
+        var corners = 0;
+
+        foreach (var pos in positions)
+        {
+            var north = pos.MoveInDirection('n');
+            var east = pos.MoveInDirection('e');
+            var south = pos.MoveInDirection('s');
+            var west = pos.MoveInDirection('w');
+            var northEast = north.MoveInDirection('e');
+            var northWest = north.MoveInDirection('w');
+            var southEast = south.MoveInDirection('e');
+            var southWest = south.MoveInDirection('w');
+
+            // exterior corners
+            if (!positions.Contains(north) && !positions.Contains(east)) corners++;
+            if (!positions.Contains(north) && !positions.Contains(west)) corners++;
+            if (!positions.Contains(south) && !positions.Contains(east)) corners++;
+            if (!positions.Contains(south) && !positions.Contains(west)) corners++;
+
+            // interior corners
+            if (positions.Contains(north) && positions.Contains(east) && !positions.Contains(northEast)) corners++;
+            if (positions.Contains(north) && positions.Contains(west) && !positions.Contains(northWest)) corners++;
+            if (positions.Contains(south) && positions.Contains(east) && !positions.Contains(southEast)) corners++;
+            if (positions.Contains(south) && positions.Contains(west) && !positions.Contains(southWest)) corners++;
+        }
+
+        return corners;
+    }
 }
