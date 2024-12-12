@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using AoC.Tools.Models;
 
 namespace AoC.Tools;
 
@@ -83,4 +84,19 @@ public static class Input
         }
         return grid;
     }
+
+    public static Dictionary<Position, char> AsCharMap(this string[] lines)
+        => (from row in Enumerable.Range(0, lines.Length)
+            from col in Enumerable.Range(0, lines[row].Length)
+            select new KeyValuePair<Position, char>(new(col, row), lines[row][col])).ToDictionary();
+
+    public static Dictionary<Position, int> AsIntMap(this string[] lines)
+        => (from row in Enumerable.Range(0, lines.Length)
+            from col in Enumerable.Range(0, lines[row].Length)
+            select new KeyValuePair<Position, int>(new(col, row), lines[row][col].ToInt())).ToDictionary();
+
+    public static Dictionary<Position, TValue> AsMap<TValue>(string[] input) where TValue : IParsable<TValue>
+        => (from row in Enumerable.Range(0, input.Length)
+            from col in Enumerable.Range(0, input[row].Length)
+            select new KeyValuePair<Position, TValue>(new(col, row), TValue.Parse(input[row][col].ToString(), null))).ToDictionary();
 }
