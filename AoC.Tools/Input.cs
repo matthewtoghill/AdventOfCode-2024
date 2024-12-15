@@ -28,6 +28,9 @@ public static class Input
     public static string[] SplitLines(this string text, StringSplitOptions splitOptions = StringSplitOptions.RemoveEmptyEntries)
         => text.Split(["\n", "\r\n"], splitOptions);
 
+    public static string[] SplitParagraphs(this string text, StringSplitOptions splitOptions = StringSplitOptions.RemoveEmptyEntries)
+        => text.Split(["\n\n", "\r\n\r\n"], splitOptions);
+
     public static IEnumerable<T> SplitTo<T>(this string text, StringSplitOptions splitOptions = StringSplitOptions.RemoveEmptyEntries) where T : IParsable<T>
         => text.SplitLines(splitOptions)
                .Select(x => T.Parse(x, null));

@@ -1,4 +1,6 @@
-﻿namespace AoC.Tools.Models;
+﻿using System.Text;
+
+namespace AoC.Tools.Models;
 
 public static class PositionExtensions
 {
@@ -61,5 +63,20 @@ public static class PositionExtensions
         }
 
         return corners;
+    }
+
+    public static void PrintMap<T>(this Dictionary<Position, T> map)
+    {
+        var maxHeight = map.Keys.Max(x => x.Y);
+        var maxWidth = map.Keys.Max(x => x.X);
+        for (int y = 0; y <= maxHeight; y++)
+        {
+            var sb = new StringBuilder();
+            for (int x = 0; x <= maxWidth; x++)
+            {
+                sb.Append(map[new Position(x, y)]);
+            }
+            Console.WriteLine(sb.ToString());
+        }
     }
 }
