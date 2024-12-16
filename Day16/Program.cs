@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using AoC.Tools.Models;
+﻿using AoC.Tools.Models;
 
 namespace Day16;
 
@@ -7,7 +6,7 @@ public class Program
 {
     private static readonly string[] _input = Input.ReadAllLines();
     private static readonly Dictionary<char, char> TurnRight = new() { ['N'] = 'E', ['E'] = 'S', ['S'] = 'W', ['W'] = 'N' };
-    private static readonly Dictionary<char, char> TurnLeft = new() { ['N'] = 'W', ['E'] = 'N', ['S'] = 'E', ['W'] = 'S' };
+    private static readonly Dictionary<char, char> TurnLeft = new() { ['N'] = 'W', ['W'] = 'S', ['S'] = 'E', ['E'] = 'N' };
 
     private static void Main()
     {
