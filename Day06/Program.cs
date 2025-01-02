@@ -40,7 +40,7 @@ public class Program
     }
 
     private static int Part2(Guard start, HashSet<Position> obstacles, HashSet<Position> originalRoute)
-        => originalRoute.Count(x => CheckLoop([.. obstacles, x], start));
+        => originalRoute.AsParallel().Count(x => CheckLoop([.. obstacles, x], start));
 
     private static bool CheckLoop(HashSet<Position> obstacles, Guard guard)
     {
