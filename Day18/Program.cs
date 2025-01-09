@@ -63,7 +63,7 @@ public class Program
     {
         while (min < max)
         {
-            int mid = (min + max) / 2;
+            int mid = min + ((max - min) / 2);
             if (predicate(mid))
                 max = mid;
             else
